@@ -22,7 +22,7 @@ Conservation Plot Platform is a full-stack web application that allows users to 
 **Frontend:** React, TypeScript, Vite, MapLibre GL, CSS  
 **Backend:** Node.js, Express, TypeScript  
 **Database:** PostgreSQL  
-**Integration:** Shopify Admin API, Shopify Webhooks, Nodemailer  
+**Integration:** Shopify Admin API, Shopify Webhooks, Resend 
 **Other:** PDFKit, OpenStreetMap
 
 ## How It Works
