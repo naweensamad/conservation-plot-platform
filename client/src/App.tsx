@@ -5,6 +5,9 @@ import PlotMap from './components/PlotMap'
 import PlotCard from './components/PlotCard'
 import type { Plot, PlotStatus } from './types/plot'
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'
+
 type PlotFilter = 'all' | PlotStatus
 
 function App() {
@@ -27,7 +30,7 @@ function App() {
   useEffect(() => {
     async function fetchPlots() {
       try {
-        const response = await fetch('http://localhost:3001/api/plots')
+        const response = await fetch(`${API_BASE_URL}/api/plots`)
 
         if (!response.ok) {
           throw new Error('Failed to fetch plots')
@@ -89,7 +92,7 @@ function App() {
       setCheckoutError(null)
 
       const response = await fetch(
-        'http://localhost:3001/api/checkout',
+        `${API_BASE_URL}/api/checkout`,
         {
           method: 'POST',
           headers: {
