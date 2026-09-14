@@ -21,7 +21,7 @@ app.post(
   '/api/webhooks/shopify/orders-paid',
   express.raw({ type: 'application/json' }),
   async (req, res) => {
-    const clientSecret = process.env.SHOPIFY_CLIENT_SECRET
+    const clientSecret = process.env.SHOPIFY_WEBHOOK_SECRET
     const shopifyHmac = req.get('X-Shopify-Hmac-Sha256')
 
     if (!clientSecret || !shopifyHmac) {
