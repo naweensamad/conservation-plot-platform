@@ -1,3 +1,5 @@
 .env
 node_modules/
 certificates/
+conservation_plot_platform.sql
+

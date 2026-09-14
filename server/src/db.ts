@@ -5,10 +5,15 @@ dotenv.config()
 
 const { Pool } = pg
 
+const databaseUrl = process.env.DATABASE_URL
+
+if (!databaseUrl) {
+  throw new Error('DATABASE_URL is not configured')
+}
+
 export const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'conservation_plot_platform',
-  password: process.env.DB_PASSWORD,
-  port: 5432,
+  connectionString: databaseUrl,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 })
