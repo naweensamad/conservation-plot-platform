@@ -1,4 +1,5 @@
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend'
+import fs from 'fs'
 
 interface SendCertificateEmailData {
   to: string
@@ -10,23 +11,18 @@ interface SendCertificateEmailData {
 export async function sendCertificateEmail(
   data: SendCertificateEmailData,
 ) {
-  const emailUser = process.env.EMAIL_USER
-  const emailPassword = process.env.EMAIL_APP_PASSWORD
+  const apiKey = process.env.RESEND_API_KEY
 
-  if (!emailUser || !emailPassword) {
-    throw new Error('Email credentials are not configured')
+  if (!apiKey) {
+    throw new Error('RESEND_API_KEY is not configured')
   }
 
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: emailUser,
-      pass: emailPassword,
-    },
-  })
+  const resend = new Resend(apiKey)
 
-  await transporter.sendMail({
-    from: `"Conservation Plot Platform" <${emailUser}>`,
+  const certificate = fs.readFileSync(data.certificatePath)
+
+  const { error } = await resend.emails.send({
+    from: 'Conservation Plot Platform <onboarding@resend.dev>',
     to: data.to,
     subject: `Your conservation certificate – ${data.plotName}`,
     text: `Hi ${data.recipientName},
@@ -40,8 +36,14 @@ Conservation Plot Platform`,
     attachments: [
       {
         filename: 'conservation-certificate.pdf',
-        path: data.certificatePath,
+        content: certificate,
       },
     ],
   })
+
+  if (error) {
+    throw new Error(
+      `Failed to send certificate email: ${error.message}`,
+    )
+  }
 }
